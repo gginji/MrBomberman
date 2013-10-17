@@ -1,14 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\WorldEditor.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Tools\TileColorHandler.cs">
     <Files>
+      <File FileName="Assets\Scripts\WorldEditor.cs" Line="74" Column="105" />
       <File FileName="Assets\Scripts\Managers\IOManager.cs" Line="7" Column="54" />
       <File FileName="Assets\Scripts\Tools\VertHandler.cs" Line="64" Column="34" />
       <File FileName="Assets\Scripts\Tools\VerticlesIndexer.cs" Line="92" Column="4" />
       <File FileName="Assets\Scripts\Controllers\TopDownCameraController.cs" Line="24" Column="11" />
       <File FileName="Assets\Scripts\UI\MainInterface.cs" Line="8" Column="3" />
-      <File FileName="Assets\Scripts\Tools\TileColorHandler.cs" Line="34" Column="5" />
-      <File FileName="Assets\Scripts\WorldEditor.cs" Line="48" Column="13" />
+      <File FileName="Assets\Scripts\Tools\TileColorHandler.cs" Line="76" Column="52" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -19,9 +19,10 @@ public class WorldEditor : MonoBehaviour {
 	
 	//for paint brush only...
 	public Vector4 brushColor = new Vector4(0, 0, 0, -1);
+	public float maxTransparency = 1;
 	
 	//for texture brush only...
-	public Vector4 brushTexture;
+	public Texture2D brushTexture;
 	
 	//Terrain assets...
 	public GameObject defaultTextureTile;
@@ -54,20 +55,24 @@ public class WorldEditor : MonoBehaviour {
 				RaycastHit hitFloor2;
 				if (Physics.Raycast (ray.origin, ray.direction, out hitFloor2, 100f)) 
 				{
-					List<string> testBrush = getTilesAroundPoint(hitFloor2.point, 4);
+					List<string> testBrush = getTilesAroundPoint(hitFloor2.point, (int)Mathf.Ceil(brushSize*3));
 					foreach(string s in testBrush)
 					{
+						
 						if(brushType==BrushType.sculpt)
 						{
 							((GameObject)((Hashtable)world[s])["textureTile"]).GetComponent<VerticlesIndexer>().applySmoothTranslationToVerticles(hitFloor2.point, brushDirection, brushSize, brushIntensity, maxHeight);
 							((GameObject)((Hashtable)world[s])["colorTile"]).GetComponent<VerticlesIndexer>().applySmoothTranslationToVerticles(hitFloor2.point, brushDirection, brushSize, brushIntensity, maxHeight);
 						}
 						
-						if(brushType==BrushType.paint)
-							((GameObject)((Hashtable)world[s])["colorTile"]).GetComponent<TileColorHandler>().paint(hitFloor2.point, brushColor, brushSize, brushIntensity);
-						
-						//if(brushType==BrushType.texturePaint)
-						//	((GameObject)((Hashtable)world[s])["tile"]).GetComponent<TileColorHandler>().paint(hitFloor2.point, new Vector4(0, 0, 0, -0.1f), 1, 1);
+						if(Vector3.Distance(((GameObject)((Hashtable)world[s])["textureTile"]).transform.position, hitFloor2.point)<brushSize*DEFAULT_TILE_STEP)
+						{
+							if(brushType==BrushType.paint)
+								((GameObject)((Hashtable)world[s])["colorTile"]).GetComponent<TileColorHandler>().paint(hitFloor2.point, brushColor, brushSize, brushIntensity, maxTransparency);
+							
+							if(brushType==BrushType.texturePaint)
+								((GameObject)((Hashtable)world[s])["textureTile"]).GetComponent<TileColorHandler>().paintTexture(hitFloor2.point, brushTexture, brushSize, brushIntensity, maxTransparency);
+						}
 					}
 				}
 			}
