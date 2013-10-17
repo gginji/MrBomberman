@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public enum BrushType
 {
-	sculpt, paint, texturePaint
+	selection, sculpt, paint, texturePaint
 }
 
 public class WorldEditor : MonoBehaviour {
@@ -43,25 +43,32 @@ public class WorldEditor : MonoBehaviour {
 	void Update () {
 		if(Input.GetMouseButton(0))
 		{
-			Ray ray = Camera.mainCamera.ScreenPointToRay(Input.mousePosition);
-		
-			RaycastHit hitFloor2;
-			if (Physics.Raycast (ray.origin, ray.direction, out hitFloor2, 100f)) 
+			if(brushType==BrushType.selection)
 			{
-				List<string> testBrush = getTilesAroundPoint(hitFloor2.point, 4);
-				foreach(string s in testBrush)
+				//todo: show selection's properties
+			}
+			else
+			{
+				Ray ray = Camera.mainCamera.ScreenPointToRay(Input.mousePosition);
+		
+				RaycastHit hitFloor2;
+				if (Physics.Raycast (ray.origin, ray.direction, out hitFloor2, 100f)) 
 				{
-					if(brushType==BrushType.sculpt)
+					List<string> testBrush = getTilesAroundPoint(hitFloor2.point, 4);
+					foreach(string s in testBrush)
 					{
-						((GameObject)((Hashtable)world[s])["textureTile"]).GetComponent<VerticlesIndexer>().applySmoothTranslationToVerticles(hitFloor2.point, brushDirection, brushSize, brushIntensity, maxHeight);
-						((GameObject)((Hashtable)world[s])["colorTile"]).GetComponent<VerticlesIndexer>().applySmoothTranslationToVerticles(hitFloor2.point, brushDirection, brushSize, brushIntensity, maxHeight);
+						if(brushType==BrushType.sculpt)
+						{
+							((GameObject)((Hashtable)world[s])["textureTile"]).GetComponent<VerticlesIndexer>().applySmoothTranslationToVerticles(hitFloor2.point, brushDirection, brushSize, brushIntensity, maxHeight);
+							((GameObject)((Hashtable)world[s])["colorTile"]).GetComponent<VerticlesIndexer>().applySmoothTranslationToVerticles(hitFloor2.point, brushDirection, brushSize, brushIntensity, maxHeight);
+						}
+						
+						if(brushType==BrushType.paint)
+							((GameObject)((Hashtable)world[s])["colorTile"]).GetComponent<TileColorHandler>().paint(hitFloor2.point, brushColor, brushSize, brushIntensity);
+						
+						//if(brushType==BrushType.texturePaint)
+						//	((GameObject)((Hashtable)world[s])["tile"]).GetComponent<TileColorHandler>().paint(hitFloor2.point, new Vector4(0, 0, 0, -0.1f), 1, 1);
 					}
-					
-					if(brushType==BrushType.paint)
-						((GameObject)((Hashtable)world[s])["colorTile"]).GetComponent<TileColorHandler>().paint(hitFloor2.point, brushColor, brushSize, brushIntensity);
-					
-					//if(brushType==BrushType.texturePaint)
-					//	((GameObject)((Hashtable)world[s])["tile"]).GetComponent<TileColorHandler>().paint(hitFloor2.point, new Vector4(0, 0, 0, -0.1f), 1, 1);
 				}
 			}
 		}
